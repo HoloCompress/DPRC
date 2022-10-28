@@ -5,12 +5,12 @@
 This repository contains the source codes for the paper [Joint Neural Phase Retrieval and Compression for Energy- and Computation-Efficient Holography on the Edge](https://dl.acm.org/doi/10.1145/3528223.3530070)
 
 ## Prepare the environment
-To train/test with the codes, please first prepare the conda environment first.
+To train/test with the codes, please prepare the conda environment first.
 #### Prepare the Python environment:
      
 1) Install anaconda on your machine. (For example, you can install [MiniConda](https://docs.conda.io/en/latest/miniconda.html).) 
 
-2) After installing conda, run the following commands in the terminal:
+2) After installing anaconda, run the following commands in the terminal:
         
     ```
     conda env create -f environment_dprc.yaml  
@@ -51,8 +51,8 @@ We have provided a few data samples in ```./data``` for a quick start when the f
 ## Some parameters
 In the training scripts, we can adjust the parameters by specifying:
 *  ```-g '1'```:  specify the index of gpu on which the codes will be run, e.g, we specify '1' here.
-* ```--dataset```: specify which dataset to train/test on, use '--dataset DIV2K' for train/test on DIV2K dataet and use '--dataset collected' to test on self-collected images.
-* ```--pixel_pitch 6.4```: this will make the model used a pixel pitch of 6.4 um.
+* ```--dataset```: specify which dataset to train/test on, use ```--dataset DIV2K``` for train/test on DIV2K dataset and use ```--dataset collected``` to test on self-collected images.
+* ```--pixel_pitch 6.4```: this will make the model use a pixel pitch of 6.4 um.
 * ```--prop_dist 20```: specify a reconstruction distance at 20 cm. You can change propagation distance according to your needs.
 * ```--pretrain_path```: since we adopt a two-stage training, it is used to specify the location of the pretrained model file produced by stage 1. 
 * ```--vis```: if specified, we'll visualize the output images in tensorboard during training.
