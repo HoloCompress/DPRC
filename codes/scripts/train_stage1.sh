@@ -1,0 +1,1 @@
+python train.py -g '3' --vis --batch_size 1 --lr 1e-4 --channel r --prop_dist 20 --pixel_pitch 6.4

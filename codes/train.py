@@ -1,0 +1,64 @@
+from collections import OrderedDict
+from tqdm import tqdm
+import argparse
+from dataset import get_dataloader
+from common import get_config
+from utility import cycle
+from agent import get_agent
+
+
+def main():
+    config = get_config('train')
+    # create network and training agent
+    print(config)
+
+    # create network and training agent
+    tr_agent = get_agent(config)
+    print(tr_agent.net)
+
+    # load from checkpoint if provided
+    if config.cont:
+        tr_agent.load_ckpt(config.ckpt)
+
+    # create dataloader
+    train_loader = get_dataloader('train', config)
+    val_loader = get_dataloader('test',  config)
+    val_loader_cycle = cycle(val_loader)
+
+    # start training
+    clock = tr_agent.clock
+
+    for e in range(clock.epoch, clock.epoch + config.nr_epochs):
+        # begin iteration
+        pbar = tqdm(train_loader)
+        for b, data in enumerate(pbar):
+            # train step
+            outputs, losses = tr_agent.train_func(data)
+            # visualize
+            if config.vis and clock.step % config.vis_frequency == 0:
+                tr_agent.visualize_batch(data, 'train', outputs=outputs)
+
+            pbar.set_description("EPOCH[{}][{}]".format(e, b))
+            pbar.set_postfix(OrderedDict({k: v.item() for k, v in losses.items()}))
+
+            # validation step
+            if (clock.step+1) % config.val_frequency == 0:
+                data = next(val_loader_cycle)
+                outputs, losses = tr_agent.val_func(data)
+
+                if config.vis and clock.step % config.vis_frequency == 0:
+                    tr_agent.visualize_batch(data, 'validation', outputs=outputs)
+
+            clock.tick()
+
+        tr_agent.update_learning_rate()
+
+        if clock.epoch % config.save_frequency == 0:
+            tr_agent.save_ckpt()
+        clock.tock()
+        tr_agent.save_ckpt('latest')
+
+
+if __name__ == '__main__':
+    main()
+
