@@ -16,7 +16,7 @@ To train/test with the codes, please prepare the conda environment first.
     conda env create -f environment_dprc.yaml  
     conda activate dprc
     ```
-3) Install the library [compressAI](https://github.com/InterDigitalInc/CompressAI) with our modifications for entropy coding and entropy decoding.
+3) Install the library [compressAI](https://github.com/InterDigitalInc/CompressAI) with our modifications for entropy decoding (Note that using the library installed from other sources may produce unreasonable results).
     ```
     cd external_libraries/compressai
     python setup.py install 
